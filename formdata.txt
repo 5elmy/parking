@@ -1,0 +1,315 @@
+import { button } from '@nextui-org/theme'
+import React, { useRef } from 'react'
+import ReactToPrint from 'react-to-print'
+import image from "../assests/مركز التاهيل.jpg"
+
+const pageStyle =`
+@page {
+  size:100mm 95mm;
+  
+};
+@media all {
+  .pageBreak {
+    display:none
+  }
+};
+@media print {
+  .pageBreak{
+    page-break-before:always;
+  };
+}
+`
+export default function PrinterTest() {
+
+  let ref = useRef()
+  return (
+    <div ref={ref} >
+       <div className="flex justify-center items-center"><img src={image} className='w-[70px] h-[70px]' /></div>
+       <div className="text-[20px] text-center">----- مركز تأهيل العجوزة ق.م -------</div>
+      <div className='text-center text-[20px]'>دخول</div>
+      <div className='text-center'>رقم السيارة : "receipt.car_plate"</div>
+      <div className='text-center'>سبب الدخول : سياره + "receipt.type"</div>
+      <div className='text-center'>--------------شكراً لكم-----------------</div>
+      <div className='text-center'>receipt.arrivalTime</div>
+
+      <ReactToPrint trigger={()=><button>print</button>} content={()=>ref.current } pageStyle={pageStyle}  />
+      
+    </div>
+  )
+}
+
+
+
+//Add new photo
+
+ const test = (x)=>{
+    console.log({x});
+    setImg(x)
+ }
+    const onSubmit = async(e) => {
+        e.preventDefault();
+        let form_Data = new FormData(e.currentTarget);
+      setIsLoading(true)
+         if(img){
+
+             form_Data.append("image",img)
+         }
+         if(classification)
+         {
+            form_Data.append("Classification" , classification)
+         }
+         form_Data.append("quantity",count)
+
+         const data = Object.fromEntries(form_Data)
+         console.log({ data });
+        console.log(form_Data);
+
+        await axios.post(`${BaseUrl}/products`, form_Data, {
+            headers:{token:localStorage.getItem("token") || sessionStorage.getItem("token"), 'Content-Type': 'multipart/form-data' }
+          }).then(res=>{
+         
+            console.log({res});
+            if(res.status == 200)
+            {
+                notify({msg:res.data.message , type:"success"})
+                searchAboutProducts('')
+                setOpenProductModel(true)
+                setIsLoading(false)
+                
+            }
+          }).catch(err=>{
+            console.log(err);
+            setIsLoading(false)
+            notify({ msg: err.response.data.Error, type: "error" })
+
+          })
+         
+       
+    }
+
+
+
+//Upload img
+
+  <UploadImgForProduct  test={test} />
+
+
+
+
+//------------------------------------------------------------------------
+// import React, { useState } from 'react';
+// import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+// import { message, Upload } from 'antd';
+
+
+// const getBase64 = (img, callback) => {
+//   const reader = new FileReader();
+//   reader.addEventListener('load', () => callback(reader.result));
+//   reader.readAsDataURL(img);
+// };
+
+
+
+// const beforeUpload = (file) => {
+//   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+//   if (!isJpgOrPng) {
+//     message.error('You can only upload JPG/PNG file!');
+//   }
+//   const isLt2M = file.size / 1024 / 1024 < 2;
+//   if (!isLt2M) {
+//     message.error('Image must smaller than 2MB!');
+//   }
+//   return isJpgOrPng && isLt2M;
+// };
+// export  const UploadImgForProduct = ({test}) => {
+//   const [loading, setLoading] = useState(false);
+//   const [imageUrl, setImageUrl] = useState();
+//   const handleChange = (info) => {
+//     if (info.file.status === 'uploading') {
+//       setLoading(true);
+//       console.log("uploading");
+//       return;
+//     }
+//     if (info.file.status === 'done') {
+//       // Get this url from response in real world.
+//       console.log(info)
+//       getBase64(info.file.originFileObj, (url) => {
+//         setLoading(false);
+//         setImageUrl(url);
+//       });
+//       test(info.file.originFileObj)
+//     }
+//     if (info.file.status === 'error') {
+//       setLoading(false);
+//       console.log(info.file);
+//     }
+//   };
+//   const uploadButton = (
+//     <div>
+//       {loading ? <LoadingOutlined /> : <PlusOutlined />}
+//       <div
+//         style={{
+//           marginTop: 8,
+//         }}
+//       >
+//         Upload
+//       </div>
+//     </div>
+//   );
+//   return (
+//     <>
+//       <Upload
+//       maxCount={1}
+//         name="avatar"
+//         listType="picture-circle"
+//         className="avatar-uploader"
+//         showUploadList={false}
+//          action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+//         //  customRequest={uploadImage}
+//          beforeUpload={beforeUpload}
+//         onChange={handleChange}
+//       >
+//         {imageUrl ? (
+//           <img
+//             src={imageUrl}
+//             alt="avatar"
+//             style={{
+//               width: '100%',
+//             }}
+//           />
+//         ) : (
+//           uploadButton
+//         )}
+//       </Upload>
+//     </>
+//   );
+// };
+
+import React, { useState } from 'react';
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { message, Upload } from 'antd';
+
+
+const getBase64 = (img, callback) => {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+};
+
+
+
+const beforeUpload = (file) => {
+  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+  if (!isJpgOrPng) {
+    message.error('You can only upload JPG/PNG file!');
+  }
+  const isLt2M = file.size / 1024 / 1024 < 2;
+  if (!isLt2M) {
+    message.error('Image must smaller than 2MB!');
+  }
+  return isJpgOrPng && isLt2M;
+};
+const dummyRequest = (e) => {
+    
+        
+  setTimeout(() => {
+  
+   
+ e.onSuccess("ok");
+
+  }, 0);}
+
+
+export  const UploadImgForProduct = ({test}) => {
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState();
+  // const handleChange = (info) => {
+  //   if (info.file.status === 'uploading') {
+  //     setLoading(true);
+  //     console.log("uploading");
+  //     return;
+  //   }
+  //   if (info.file.status === 'done') {
+  //     // Get this url from response in real world.
+  //     console.log(info)
+  //     getBase64(info.file.originFileObj, (url) => {
+  //       setLoading(false);
+  //       setImageUrl(url);
+  //     });
+  //     test(info.file.originFileObj)
+  //   }
+  //   if (info.file.status === 'error') {
+  //     setLoading(false);
+  //     console.log(info.file);
+  //   }
+  // };
+  let props = {
+    name: 'file',
+    // action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
+   
+    headers: {
+      authorization: 'authorization-text',
+    },
+
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+        test(info.file.originFileObj)
+        
+      } else if (info.file.status === 'error') {
+        console.log(info);
+        message.error(`${info.file.name} file upload failed.`);
+        
+      }
+    },
+  };
+  const uploadButton = (
+    <div>
+      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div
+        style={{
+          marginTop: 8,
+        }}
+      >
+        Upload
+      </div>
+    </div>
+  );
+
+
+  return (
+    <>
+      <Upload
+       maxCount={1}
+        name="avatar"
+        listType="picture-circle"
+        className="avatar-uploader"
+         showUploadList={false}
+        //  action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+         beforeUpload={beforeUpload}
+        // onChange={handleChange}
+        customRequest={dummyRequest}  accept='.png,.jpeg,.jpg' {...props}
+      >
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt="avatar"
+            style={{
+              width: '100%',
+            }}
+          />
+        ) : (
+          uploadButton
+        )}
+      </Upload>
+  
+    </>
+  );
+};
+
+
+
+

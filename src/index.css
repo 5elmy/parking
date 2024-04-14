@@ -1,0 +1,125 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Tenor+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inspiration&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@100&display=swap');
+*
+{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  scrollbar-width: thin;
+  scrollbar-color: #000 #f4f4f4;
+  /* font-family: 'Segoe UI'; */
+ 
+}
+/* body{
+  background: #e2e8f0 !important;
+
+} */
+.camera{
+  position: relative;
+}
+.result{
+  position: fixed;
+  top: 0;
+  left: 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.9);
+  transition: 0.4s;
+}
+
+.result.hasPhoto{
+  left: 0;
+
+}
+video{
+  /* width: 100%;
+  max-width: 100%; */
+  /* height: auto; */
+
+}
+.bbtn{
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  appearance: none;
+  border: none;
+  outline: none;
+  padding: 8px 16px; 
+  background-image: linear-gradient(to right , #844FFF 50% , #F9F9FF 50%);
+  background-position: 0%;
+  background-size:200% ;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  transition: 0.4s;
+  cursor: pointer;
+}
+.bbtn:hover{
+  background-position: 100%;
+  color: #000;
+}
+
+
+/* 
+.bg-main{
+  background: var(--shade-light-background, #F9F9FF) !important;
+} */
+
+.ull {
+  list-style-type: circle;
+}
+.ii{
+  color:black !important;
+}
+.bg_Btn{
+  background:linear-gradient(225deg, #6675F7 0%, #57007B 100%); ;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.content{
+  
+  position: absolute;
+  top: 50px;
+  left: 250px;
+ color: #F9F9FF;
+  width: 500px;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+ @media print {
+ 
+  body {
+    font-size: 12pt; 
+    height: 300cap;
+  }
+  
+ 
+  .print-content {
+    margin: 1cm; 
+  }
+  
+
+  .print-content p {
+    padding: 0.5cm 1cm; 
+  }
+}  
+
