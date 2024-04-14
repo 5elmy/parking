@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/parking/static/css/main.c23b9518.css",
+    "main.js": "/parking/static/js/main.aeff1e71.js",
+    "static/media/مركز التاهيل.jpg": "/parking/static/media/مركز التاهيل.ffa15ce01ff9db8e0be7.jpg",
+    "index.html": "/parking/index.html",
+    "main.c23b9518.css.map": "/parking/static/css/main.c23b9518.css.map",
+    "main.aeff1e71.js.map": "/parking/static/js/main.aeff1e71.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c23b9518.css",
+    "static/js/main.aeff1e71.js"
+  ]
+}
